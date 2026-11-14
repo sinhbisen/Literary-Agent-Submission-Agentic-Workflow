@@ -1,56 +1,37 @@
-# Agentic Literary Fiction Submission Workflow
+# Offline synthetic demonstration — Phase 1
 
-**Operational case study | Agentic workflow architecture, controls and evidence**
+This is a **standard-library Python illustration**, not the production literary-agent workflow. Every agent, agency, filename, receipt and provider acknowledgement is invented. The code uses **no network requests, account credentials, Gmail, Drive, browser tools or LLM calls**. `SENT` is a mock local outcome.
 
-* **Problem:** Literary-agent submissions require recipient-specific research, compliant materials, duplicate prevention and reliable follow-up records.
-* **Approach:** Combine AI-assisted prospect research with policy gates, controlled autonomy, structured records and human escalation.
-* **Scope:** Private workflow with recorded submissions. This repository is a **sanitised design and evidence summary**, **not executable source code**.
+## Run
 
-## Recorded activity
+From `demo/`:
 
-|Private tracker snapshot · 6 Nov 2026|Count|
-|-|-:|
-|Candidates recorded|**167**|
-|Agent-origin submissions marked `SENT`|**62**|
-|Agent-origin sends marked `SEND UNCONFIRMED`|**4**|
-
-*Counts are tracker states, not independently audited provider receipts or proof of recipient delivery.* [Evidence and definitions](evidence/EXECUTION_EVIDENCE.md).
-
-## Workflow
-
-```mermaid
-flowchart TD
-    A\[Authorised run] --> B\[Reconcile history and pending sends]
-    B --> C\[Research and rank candidates]
-    C --> D\[Check live agency rules and approved assets]
-    D --> E{Policy gates pass?}
-    E -->|No| F\[BLOCK / SKIP / HOLD + reason]
-    E -->|Yes| G\[Record SENDING in two ledgers]
-    G --> H\[Attempt dispatch once]
-    H --> I{Conclusive send evidence?}
-    I -->|Yes| J\[SENT + package assurance]
-    I -->|No| K\[SEND UNCONFIRMED; reconcile]
-    F --> L\[Persist changes and report]
-    J --> L
-    K --> L
+```bash
+python simulate.py
+python -m unittest -v test_workflow.py
 ```
 
-## Design decisions
+The fixture date is deliberately frozen at **12 November 2026** so its 30-day freshness tests remain reproducible. This is *not* a claim that today's actual agency openings have been verified.
 
-|Risk|Control|
-|-|-|
-|Duplicate or prohibited submission|Historical recipient/agency checks; current official guidelines|
-|Unsupported claims or wrong materials|Locked assets, factual answer bank and preflight|
-|Ambiguous send outcome|Dual pre-send writes; no blind resend|
-|Overreach or runaway cost|Human escalation; capped attempts and research budget|
+## What is demonstrated
 
-## Supporting documentation
+- Separate persistent fit and preliminary readiness labels, without pretending either is final send authority.
+- A fit-qualified prospect blocked by an unavailable combined sample stays visible in the opportunity backlog.
+- Official route/opening evidence older than 30 days is excluded from actionable readiness while preserving literary fit.
+- A previously `SENT` or `SEND UNCONFIRMED` prospect cannot be re-sent, even if the research-stage readiness label says `SUBMISSION-READY`.
+- External page text cannot grant sending permission or override a historical duplicate; the sample contains a deliberately malicious page instruction that remains inert text.
+- Strict AI-free author content, truthfulness about exact word limits, mandatory body greetings, attachment availability and portal permissions remain independent checks.
+- Unique mock attempts, a combined daily capacity limit and protection against duplicated input records.
 
-|Document|What it demonstrates|
-|-|-|
-|[Operating Contract](docs/OPERATING_CONTRACT.md)|Authority, eligibility and stop conditions|
-|[Execution Profile](docs/EXECUTION_PROFILE.md)|Ranking, daily run design and state handling|
-|[Execution Evidence](evidence/EXECUTION_EVIDENCE.md)|Recorded activity and verification boundaries|
+The synthetic tests **do not validate** live Google Sheets conflict handling, Gmail scopes, browser isolation, owner permissions or external provider behaviour. For actual observed results see [the case study](../evidence/TWO_AGENT_CASE_STUDY.md).
 
-**Portfolio focus:** Process redesign, agentic orchestration, operational governance and evidence-led evaluation. Live account bindings, personal information and manuscript assets are deliberately excluded.
+## Added owner-policy demonstrations — 13 November 2026
 
+The supplementary tests exercise:
+
+- A **seven-actionable target** and **15 net-new research ceiling**; held/unverified candidates do not count towards seven, and a candidate-level problem cannot end the research pass.
+- A **nearest approved same-category asset** choice for word-count guidance, including approximately 500 vs the existing shorter synopsis and approximately 10,000 vs a 10,014-word approved sample. A mismatch does not claim formal agency acceptance.
+- **Metadata-only attachment naming** without altering contents.
+- Semantic matching of available author details is a **human/agent judgement** in the operational workflow, not validated by this local demo; the synthetic test shows only that availability is distinct from approval to alter an immutable query.
+
+The tests do not establish production autonomy, web-source coverage, live Gmail permissions or secure scheduler behaviour.
